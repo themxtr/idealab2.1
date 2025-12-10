@@ -1,0 +1,186 @@
+{
+  "colors": [
+    {
+      "id": "green",
+      "name": "Green",
+      "priceMultiplier": 1.0,
+      "description": "Standard PCB green color"
+    },
+    {
+      "id": "red",
+      "name": "Red",
+      "priceMultiplier": 1.15,
+      "description": "Red solder mask"
+    },
+    {
+      "id": "blue",
+      "name": "Blue",
+      "priceMultiplier": 1.15,
+      "description": "Blue solder mask"
+    },
+    {
+      "id": "yellow",
+      "name": "Yellow",
+      "priceMultiplier": 1.2,
+      "description": "Yellow solder mask"
+    },
+    {
+      "id": "white",
+      "name": "White",
+      "priceMultiplier": 1.2,
+      "description": "White solder mask"
+    },
+    {
+      "id": "black",
+      "name": "Black",
+      "priceMultiplier": 1.25,
+      "description": "Black solder mask"
+    }
+  ],
+  "copperThickness": [
+    {
+      "id": "1oz",
+      "name": "1 oz",
+      "value": 1,
+      "unit": "oz",
+      "micrometers": 35,
+      "priceMultiplier": 1.0,
+      "description": "Standard 1 oz (35 µm) copper"
+    },
+    {
+      "id": "2oz",
+      "name": "2 oz",
+      "value": 2,
+      "unit": "oz",
+      "micrometers": 70,
+      "priceMultiplier": 1.3,
+      "description": "2 oz (70 µm) copper for high current"
+    },
+    {
+      "id": "3oz",
+      "name": "3 oz",
+      "value": 3,
+      "unit": "oz",
+      "micrometers": 105,
+      "priceMultiplier": 1.6,
+      "description": "3 oz (105 µm) copper for very high current"
+    }
+  ],
+  "layerCount": [
+    {
+      "id": "2layer",
+      "name": "2 Layer",
+      "value": 2,
+      "priceMultiplier": 1.0,
+      "description": "2-layer PCB"
+    },
+    {
+      "id": "4layer",
+      "name": "4 Layer",
+      "value": 4,
+      "priceMultiplier": 2.5,
+      "description": "4-layer PCB with inner planes"
+    },
+    {
+      "id": "6layer",
+      "name": "6 Layer",
+      "value": 6,
+      "priceMultiplier": 4.0,
+      "description": "6-layer PCB for complex designs"
+    },
+    {
+      "id": "8layer",
+      "name": "8 Layer",
+      "value": 8,
+      "priceMultiplier": 6.0,
+      "description": "8-layer PCB for high-density applications"
+    }
+  ],
+  "drillSizes": [
+    {
+      "id": "0.2mm",
+      "name": "0.2 mm",
+      "value": 0.2,
+      "unit": "mm",
+      "description": "Fine pitch via drilling"
+    },
+    {
+      "id": "0.3mm",
+      "name": "0.3 mm",
+      "value": 0.3,
+      "unit": "mm",
+      "description": "Standard via drilling"
+    },
+    {
+      "id": "0.4mm",
+      "name": "0.4 mm",
+      "value": 0.4,
+      "unit": "mm",
+      "description": "Standard component holes"
+    },
+    {
+      "id": "0.5mm",
+      "name": "0.5 mm",
+      "value": 0.5,
+      "unit": "mm",
+      "description": "Larger component holes"
+    },
+    {
+      "id": "1mm",
+      "name": "1.0 mm",
+      "value": 1.0,
+      "unit": "mm",
+      "description": "Through-hole component holes"
+    }
+  ],
+  "surfaceFinish": [
+    {
+      "id": "hasl",
+      "name": "HASL",
+      "priceMultiplier": 1.0,
+      "description": "Hot Air Solder Leveling (standard)"
+    },
+    {
+      "id": "leadfree",
+      "name": "Lead-Free HASL",
+      "priceMultiplier": 1.1,
+      "description": "RoHS compliant lead-free finish"
+    },
+    {
+      "id": "enig",
+      "name": "ENIG",
+      "priceMultiplier": 1.5,
+      "description": "Electroless Nickel Immersion Gold"
+    },
+    {
+      "id": "osp",
+      "name": "OSP",
+      "priceMultiplier": 1.2,
+      "description": "Organic Solderability Preservative"
+    }
+  ],
+  "silkscreen": [
+    {
+      "id": "top",
+      "name": "Top Silkscreen",
+      "included": true
+    },
+    {
+      "id": "bottom",
+      "name": "Bottom Silkscreen",
+      "included": false
+    }
+  ],
+  "minimumValues": {
+    "traceWidth": "0.15mm",
+    "traceSpacing": "0.15mm",
+    "viaSize": "0.3mm",
+    "boardWidth": "10mm",
+    "boardHeight": "10mm",
+    "boardThickness": "1.6mm"
+  },
+  "maxValues": {
+    "boardWidth": "500mm",
+    "boardHeight": "500mm"
+  }
+}
