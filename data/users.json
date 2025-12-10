@@ -1,0 +1,18 @@
+[
+  {
+    "id": "USR-103014961025105683982",
+    "name": "Max Xtreme",
+    "email": "themaxxtreme@gmail.com",
+    "avatar": "https://lh3.googleusercontent.com/a/ACg8ocL_GSavz5q23MadlXi1Y4djkqfABBvFmjwBtIFfa3SRQT69XSez=s96-c",
+    "type": "non-university",
+    "isProfileComplete": true
+  },
+  {
+    "id": "USR-103181195347061909927",
+    "name": "REVA UNIVERSITY AICTE IDEA LAB",
+    "email": "revauniversityaicteidealab@gmail.com",
+    "avatar": "https://lh3.googleusercontent.com/a/ACg8ocLf6R801UnUvIzqaJyb3z5ZuUXMc_GlB138Rpr7bxDMP09xgsE=s96-c",
+    "type": "non-university",
+    "isProfileComplete": true
+  }
+]
