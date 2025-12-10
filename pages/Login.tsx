@@ -1,9 +1,15 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShieldCheck, ArrowRight, Loader2, GraduationCap, Globe, Smartphone, KeyRound, ChevronLeft } from 'lucide-react';
 import { authService } from '../services/api';
 import { User as UserType } from '../types';
+
+// Firebase OTP Imports
+import { sendOTP } from '../src/services/sendOTP';
+import { verifyOTP } from '../src/services/verifyOTP';
+import { setupRecaptcha } from '../src/firebase';
+import { ConfirmationResult, RecaptchaVerifier } from 'firebase/auth';
 
 interface LoginProps {
   onLogin: (user: UserType) => void;
@@ -33,7 +39,9 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [otp, setOtp] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null); // General error message
+  const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null);
+  const [recaptchaVerifier, setRecaptchaVerifier] = useState<RecaptchaVerifier | null>(null);
   
   const navigate = useNavigate();
 
@@ -65,25 +73,37 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
   const handleSendOtp = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (phoneNumber.length !== 10) {
-        setError("Please enter a valid 10-digit mobile number");
+    setError(null);
+    setLoading(true);
+
+    // Ensure reCAPTCHA is set up before sending OTP
+    if (!recaptchaVerifier) {
+      try {
+        const verifier = setupRecaptcha("recaptcha-container");
+        setRecaptchaVerifier(verifier);
+      } catch (err: any) {
+        setError(err.message || "Failed to setup reCAPTCHA.");
+        setLoading(false);
         return;
+      }
     }
     
-    setLoading(true);
-    setError(null);
-    
     try {
-        await authService.sendOtp(phoneNumber);
+        // Use Firebase sendOTP service
+        const result = await sendOTP(`+91${phoneNumber}`, recaptchaVerifier!);
+        if (result.success && result.confirmationResult) {
+            setConfirmationResult(result.confirmationResult);
+            console.log('OTP sent!');
+        } else {
+            setError(result.message);
+        }
         setStep('otp');
     } catch (err: any) {
-        console.error("SMS Error:", err);
-        setError(err.message || "Failed to send OTP. Try again.");
+        setError("An unexpected error occurred: " + err.message);
     } finally {
         setLoading(false);
     }
   };
-
   const handleVerifyOtp = async (e: React.FormEvent) => {
       e.preventDefault();
       if (otp.length !== 6) {
@@ -92,11 +112,23 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
       }
 
       setLoading(true);
-      setError(null);
+      setError(null); // Clear previous errors
+
+      if (!confirmationResult || !recaptchaVerifier) {
+        setError("OTP request not initiated or reCAPTCHA not set up.");
+        setLoading(false);
+        return;
+      }
+
       try {
-          const user = await authService.verifyOtpAndLogin(phoneNumber, otp, selectedRole!);
-          onLogin(user);
-          navigate('/');
+          // Use Firebase verifyOTP service
+          const result = await verifyOTP(otp, confirmationResult, recaptchaVerifier);
+          if (result.success && result.data) {
+            onLogin(result.data.user as UserType); // Cast to UserType if needed, assuming Firebase User is compatible
+            navigate('/');
+          } else {
+            setError(result.message);
+          }
       } catch (err: any) {
           console.error("OTP Error:", err);
           setError(err.message || "Invalid OTP. Please check the code sent to your phone.");
@@ -107,8 +139,10 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
   const goBack = () => {
       setError(null);
-      if (step === 'otp') setStep('phone');
-      else if (step === 'phone') setStep('method');
+      if (step === 'otp') {
+        recaptchaVerifier?.clear(); // Clear reCAPTCHA if going back from OTP
+        setStep('phone');
+      } else if (step === 'phone') setStep('method');
       else if (step === 'method') setStep('role');
   };
 
@@ -300,6 +334,10 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
                     </form>
                  )}
             </div>
+        )}
+        {/* reCAPTCHA Container - Required for Firebase */}
+        {(step === 'phone' || step === 'otp') && (
+          <div id="recaptcha-container" className="mt-4"></div>
         )}
       </div>
     </div>
